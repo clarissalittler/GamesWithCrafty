@@ -1,0 +1,17 @@
+<html>
+  <head></head>
+  <body>
+    <div id="game"></div>
+    <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+    <script>
+   Crafty.init(500,350, document.getElementById('game'));
+   Crafty.e('Floor, 2D, DOM, Color').attr({x: 0, y: 200, w: 200, h: 20}).color('green');
+   Crafty.e('Floor, 2D, DOM, Color').attr({x: 300, y: 250, w: 200, h: 20}).color('yellow');
+
+   var box1 = Crafty.e('2D, Color, DOM, Gravity, Twoway').attr({x : 0, y: 170, w: 20, h:20}).color('red').gravity('Floor').twoway(200);
+
+   var box2 = Crafty.e('2D, Color, DOM, Gravity, Fourway').attr({x : 100, y: 170, w: 20, h:20}).color('red').gravity('Floor').fourway(200);
+
+    </script>
+  </body>
+</html>

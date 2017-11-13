@@ -1,0 +1,16 @@
+html {
+    font-family: 'Saira Semi Condensed', sans-serif;
+}
+
+body {
+    width: 500px;
+    background-color: #f3d8d8;
+    border: 5px solid black;
+    padding-left: 10px;
+    margin: auto auto;
+    border-radius: 20px;
+}
+
+blockquote footer {
+    font-weight: bold;
+}

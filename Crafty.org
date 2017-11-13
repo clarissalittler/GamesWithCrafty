@@ -1,0 +1,438 @@
+* Making Games in Crafty: First Steps
+** Introduction
+   In the course of this tutorial, we'll be giving a refresher on what goes into a web page and start to delve into some of the basic functionality of CraftyJS: a small game engine implemented in JavaScript
+** What goes into a web page?
+   Every webpage is built on three pillars:
+   + HTML :: the bones of the webpage, the basic content you see and interact with
+   + CSS :: the code that determines how the HTML /looks/
+   + JavaScript :: the code that allows a web page to be /interactive/
+   
+** HTML
+HTML is the bones of the web page, the content that gets displayed.
+
+HTML is made up of matching tags like
+#+BEGIN_SRC html :exports code :tangle firstExample.html
+  <!doctype html>
+  <html>
+    <body>
+      <h1>This is our first page!</h1>
+      <p>This is some text that we want to display, but it's not going to look very interesting for now at least</p>
+
+      <blockquote>There was never a quote on the internet that couldn't be easily fabricated
+	<footer>&#8212; Abraham Lincoln, probably</footer>
+      </blockquote>
+
+      <p>Let's try counting for a bit</p>
+      <ol>
+	<li>Here's one element</li>
+	<li>Two elements</li>
+	<li>Three elements</li>
+	<li>Now I'm bored...</li>
+      </ol>
+    </body>
+  </html>
+#+END_SRC
+
+which, in default Chromium, looks like
+
+** CSS
+CSS /styles/ your HTML and makes it more interesting
+
+CSS always takes the form of 
+#+BEGIN_SRC css :exports code
+  selector {
+      property-name: property-value;
+      another-property: another-value;
+  }
+#+END_SRC
+So for example we can write this css code
+#+BEGIN_SRC css :exports code :tangle cssExamples.css
+  html {
+      font-family: 'Saira Semi Condensed', sans-serif;
+  }
+
+  body {
+      width: 500px;
+      background-color: #f3d8d8;
+      border: 5px solid black;
+      padding-left: 10px;
+      margin: auto auto;
+      border-radius: 20px;
+  }
+
+  blockquote footer {
+      font-weight: bold;
+  }
+#+END_SRC
+and change our HTML to include the CSS like so:
+
+#+BEGIN_SRC html :exports code :tangle firstExampleWithCSS.html
+  <!doctype html>
+  <html>
+    <head>
+      <link href="https://fonts.googleapis.com/css?family=Saira+Semi+Condensed" rel="stylesheet">
+      <link href="cssExamples.css" rel="stylesheet">
+    </head>
+    <body>
+      <h1>This is our first page!</h1>
+      <p>This is some text that we want to display, but it's not going to look very interesting for now at least</p>
+
+      <blockquote>There was never a quote on the internet that couldn't be easily fabricated
+	<footer>&#8212; Abraham Lincoln, probably</footer>
+      </blockquote>
+
+      <p>Let's try counting for a bit</p>
+      <ol>
+	<li>Here's one element</li>
+	<li>Two elements</li>
+	<li>Three elements</li>
+	<li>Now I'm bored...</li>
+      </ol>
+    </body>
+  </html>
+#+END_SRC
+
+and you'll get something that looks completely different
+** The Console
+   In Chrome it's =Shift+Ctrl+J=
+    [[console.png]]
+
+   The console is a place where you can test out JavaScript code as well as check to see what your code is doing. It's going to be super important if anything goes wrong in your program?
+** JavaScript
+   JavaScript is an actual programming language that runs inside the browser
+
+   Here's an example of a simple JavaScript program that prints all the prime numbers under 1000
+
+   #+BEGIN_SRC js :exports code :results output :tangle Primes.js
+     function isPrime(n) {
+         var value = true;
+         if(n == 2) {
+   	  return value;
+         }
+         else {
+   	  for(var i = 2; i < Math.sqrt(n) + 1; i = i + 1){
+   	      if (n % i == 0) {
+   		  value = false;
+   	      }
+   	  }
+   	  return value;
+         }
+     }
+
+     for(var i = 0; i < 1000; i = i + 1){
+         if(isPrime(i)){
+          console.log(i);
+         }
+     }
+   #+END_SRC
+
+  How how do you run this code? Well the easiest way to do that is to /include it in a web page/, you can do that with the =<script>= tags, like so:
+
+#+BEGIN_SRC html :exports code :results output :tangle PrimesTest.html
+  <html>
+    <head>
+      <script>
+       function isPrime(n) {
+           var value = true;
+           if(n == 2) {
+   	    return value;
+           }
+           else {
+   	    for(var i = 2; i < Math.sqrt(n) + 1; i = i + 1){
+   	        if (n % i == 0) {
+   		  value = false;
+   	        }
+   	    }
+   	    return value;
+           }
+       }
+       for(var i = 2; i < 1000; i = i + 1){
+           if(isPrime(i)){
+            console.log(i);
+           }
+       }
+
+      </script>
+    </head>
+    <body>
+      <p>You should go check the console to make sure only prime numbers printed out!</p>
+    </body>
+  </html>
+#+END_SRC
+
+Try typing this in yourself (or copy-pasting if you're feeling bored!)
+
+You can load this by going into your browser and typing =file:///= and then you should be able to navigate to the file you typed up. Once you've done that, try to navigating to the file and checking to make sure it worked.
+** Crafty
+   A small game making library for JavaScript that runs in the browser
+   http://craftyjs.com/
+*** Follow along: making platforms
+    So let's try making just a simple little thing of platforms and jumping, just a few lines of code.
+
+    Open a text editor and type the following, then load it into your browser
+   
+    #+BEGIN_SRC html :exports code :tangle CraftyTest.html
+      <html>
+	<head></head>
+	<body>
+          <div id="game"></div>
+          <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+          <script>
+   	 Crafty.init(500,350, document.getElementById('game'));
+   	 Crafty.e('Floor, 2D, DOM, Color').attr({x: 0, y: 200, w: 200, h: 20}).color('green');
+   	 Crafty.e('Floor, 2D, DOM, Color').attr({x: 300, y: 250, w: 200, h: 20}).color('yellow');
+
+   	 var box = Crafty.e('2D, Color, DOM, Gravity, Twoway').attr({x : 0, y: 170, w: 20, h:20}).color('red').gravity('Floor').twoway(200);
+      
+          </script>
+	</body>
+      </html>
+    #+END_SRC   
+** How does it work?
+   Crafty is built off of /entities/. Entities have /components/ that activate different features. 
+   
+   Entities are made with the function =Craft.e=
+   The things we put in the parentheses are the names of /components/. 
+
+   Take a couple of minutes and experiment with taking out components and then reloading your program.
+
+   For example, try changing the "Floor" component to "Stuff" in every place or remove the "Gravity" component from the box. 
+
+   Try changing the "Twoway" component to "Fourway". Is there anything else you need to change to get it to work?
+
+   Other exercises to try
+   + Add multiple boxes
+   + Look
+
+   This is an opportunity to look at the /documentation/ for CraftyJS: 
+   http://craftyjs.com/documentation/
+** Problem solving
+ So what if you want to code motion without relying on the two-way or four-way components? For example, to make a box move when a key is pressed?
+
+ Well, what we want here is the /Motion/ component
+
+   #+BEGIN_SRC html :exports code :tangle CraftyTest5.html
+     <html>
+       <head></head>
+       <body>
+         <div id="game"></div>
+         <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+         <script>
+        Crafty.init(500,350, document.getElementById('game'));
+        Crafty.e('Floor, 2D, DOM, Color').attr({x: 0, y: 200, w: 200, h: 20}).color('green');
+        Crafty.e('Floor, 2D, DOM, Color').attr({x: 300, y: 250, w: 200, h: 20}).color('yellow');
+
+        var box = Crafty.e('2D, Color, DOM, Gravity, Motion').attr({x : 0, y: 170, w: 20, h:20}).color('red').gravity('Floor');
+
+        box.bind("KeyDown", function () {
+   	 this.vy = -200;
+        });
+
+         </script>
+       </body>
+     </html>
+   #+END_SRC   
+
+** JavaScript Lessons
+Useful link:
+https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps/What_is_JavaScript
+
+   Making decisions
+   #+BEGIN_SRC js :exports code
+     if (x < 0) {
+         console.log("Less than 0");
+     }
+     else if (x == 0) {
+         console.log("Equal to 0");
+     }
+     else {
+         console.log("Greater than 0");
+     }
+   #+END_SRC
+
+   Repetition
+   #+BEGIN_SRC js :exports code
+     for(var i = 0; i < 100; i = i + 1){
+         console.log(i);
+     }
+   #+END_SRC
+   
+   Lists of things
+   #+BEGIN_SRC js :exports code
+     var list = [0,1,2,3,4];
+
+     for(var i = 0; i < list.length; i = i + 1){
+         console.log(list[i]);
+     }
+   #+END_SRC
+ 
+** Follow along: displaying dialogue
+   This'll be a small program that allows you to type and have text appear on the screen.
+
+   This time, split it into two /different/ files: one that includes the JavaScript code and one that includes the HTML.
+
+#+BEGIN_SRC html :exports code :tangle TextTest.html
+  <html>
+    <body>
+      <div id="game"></div>
+      <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+      <script type="text/javascript" src="TextTest.js"></script>
+    </body>
+  </html>
+#+END_SRC
+
+#+BEGIN_SRC javascript :exports code :tangle TextTest.js
+  window.onload = function () {
+      Crafty.init(500,350, document.getElementById('game'));
+      var textBox = Crafty.e('2D, DOM, Text, Keyboard')
+	  .attr({x : 100, y: 100});
+      textBox.texty = "";
+      textBox.bind("KeyDown", function(e) {
+	  if (e.key >= Crafty.keys["0"] && e.key <= Crafty.keys.Z) {
+	      textBox.texty = textBox.texty + String.fromCharCode(e.key);
+	      textBox.text(textBox.texty);
+	  }
+      });
+  }
+#+END_SRC
+** Tweaks to our platform code
+   #+BEGIN_SRC html :exports code :tangle CraftyTest2.html
+     <html>
+       <head></head>
+       <body>
+         <div id="game"></div>
+         <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+         <script>
+        Crafty.init(500,350, document.getElementById('game'));
+        Crafty.e('Floor, 2D, DOM, Color').attr({x: 0, y: 200, w: 200, h: 20}).color('green');
+        Crafty.e('Floor, 2D, DOM, Color').attr({x: 300, y: 250, w: 200, h: 20}).color('yellow');
+
+        var box1 = Crafty.e('2D, Color, DOM, Gravity, Twoway').attr({x : 0, y: 170, w: 20, h:20}).color('red').gravity('Floor').twoway(200);
+   
+        var box2 = Crafty.e('2D, Color, DOM, Gravity, Twoway').attr({x : 100, y: 170, w: 20, h:20}).color('red').gravity('Floor').twoway(200);
+
+         </script>
+       </body>
+     </html>
+   #+END_SRC   
+
+   #+BEGIN_SRC html :exports code :tangle CraftyTest3.html
+     <html>
+       <head></head>
+       <body>
+         <div id="game"></div>
+         <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+         <script>
+        Crafty.init(500,350, document.getElementById('game'));
+        Crafty.e('Floor, 2D, DOM, Color').attr({x: 0, y: 200, w: 200, h: 20}).color('green');
+        Crafty.e('Floor, 2D, DOM, Color').attr({x: 300, y: 250, w: 200, h: 20}).color('yellow');
+
+        var box1 = Crafty.e('2D, Color, DOM, Gravity, Fourway').attr({x : 0, y: 170, w: 20, h:20}).color('red').gravity('Floor').fourway(200);
+
+         </script>
+       </body>
+     </html>
+   #+END_SRC   
+
+
+   #+BEGIN_SRC html :exports code :tangle CraftyTest4.html
+     <html>
+       <head></head>
+       <body>
+         <div id="game"></div>
+         <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+         <script>
+        Crafty.init(500,350, document.getElementById('game'));
+        Crafty.e('Floor, 2D, DOM, Color').attr({x: 0, y: 200, w: 200, h: 20}).color('green');
+        Crafty.e('Floor, 2D, DOM, Color').attr({x: 300, y: 250, w: 200, h: 20}).color('yellow');
+
+        var box1 = Crafty.e('2D, Color, DOM, Gravity, Twoway').attr({x : 0, y: 170, w: 20, h:20}).color('red').gravity('Floor').twoway(200);
+   
+        var box2 = Crafty.e('2D, Color, DOM, Gravity, Fourway').attr({x : 100, y: 170, w: 20, h:20}).color('red').gravity('Floor').fourway(200);
+
+         </script>
+       </body>
+     </html>
+   #+END_SRC   
+
+How would we change this so that it doesn't allow double jumping?
+   #+BEGIN_SRC html :exports code :tangle CraftyTest5.html
+     <html>
+       <head></head>
+       <body>
+         <div id="game"></div>
+         <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+         <script>
+        Crafty.init(500,350, document.getElementById('game'));
+        Crafty.e('Floor, 2D, DOM, Color').attr({x: 0, y: 200, w: 200, h: 20}).color('green');
+        Crafty.e('Floor, 2D, DOM, Color').attr({x: 300, y: 250, w: 200, h: 20}).color('yellow');
+
+        var box = Crafty.e('2D, Color, DOM, Gravity, Motion').attr({x : 0, y: 170, w: 20, h:20}).color('red').gravity('Floor');
+
+        box.bind("KeyDown", function () {
+   	 this.vy = -200;
+        });
+
+         </script>
+       </body>
+     </html>
+   #+END_SRC   
+
+Is this actually right?
+#+BEGIN_SRC html :exports code :tangle CraftyTest6.html
+  <html>
+    <head></head>
+    <body>
+      <div id="game"></div>
+      <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+      <script>
+          Crafty.init(500,350, document.getElementById('game'));
+          Crafty.e('Floor, 2D, DOM, Color').attr({x: 0, y: 200, w: 200, h: 20}).color('green');
+          Crafty.e('Floor, 2D, DOM, Color').attr({x: 300, y: 250, w: 200, h: 20}).color('yellow');
+
+          var box = Crafty.e('2D, Color, DOM, Gravity, Motion').attr({x : 0, y: 170, w: 20, h:20}).color('red').gravity('Floor');
+
+          box.bind("KeyDown", function () {
+   	  if(this.vy == 0) {
+	    this.vy = -200;
+	  }
+          });
+
+      </script>
+    </body>
+  </html>
+
+#+END_SRC
+
+This fixes it
+
+#+BEGIN_SRC html :exports code :tangle CraftyTest7.html
+  <html>
+    <head></head>
+    <body>
+      <div id="game"></div>
+      <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+      <script>
+          Crafty.init(500,350, document.getElementById('game'));
+          Crafty.e('Floor, 2D, DOM, Color').attr({x: 0, y: 200, w: 200, h: 20}).color('green');
+          Crafty.e('Floor, 2D, DOM, Color').attr({x: 300, y: 250, w: 200, h: 20}).color('yellow');
+
+          var box = Crafty.e('2D, Color, DOM, Gravity, Motion').attr({x : 0, y: 170, w: 20, h:20}).color('red').gravity('Floor');
+	  box.canJump = true;
+
+          box.bind("KeyDown", function () {
+   	  if(this.canJump) {
+	    this.vy = -200;
+	    this.canJump = false;
+	  }
+          });
+
+	  box.bind("LandedOnGround", function () {
+	    this.canJump = true;
+	  });
+
+      </script>
+    </body>
+  </html>
+
+#+END_SRC
