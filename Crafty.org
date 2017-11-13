@@ -201,11 +201,14 @@ You can load this by going into your browser and typing =file:///= and then you 
    Try changing the "Twoway" component to "Fourway". Is there anything else you need to change to get it to work?
 
    Other exercises to try
-   + Add multiple boxes
-   + Look
+   + Add multiple boxes that move (maybe make them move in different ways?)
+   + Try changing the force of gravity http://craftyjs.com/api/Gravity.html
+   + Try adding an /event handler/ http://craftyjs.com/documentation/events.html so that the box changes color when a key (http://craftyjs.com/documentation/keyboard.html) is pressed
+   + Try turning the entity you control into a sprite instead of just a rectangle http://craftyjs.com/documentation/sprites.html
 
    This is an opportunity to look at the /documentation/ for CraftyJS: 
    http://craftyjs.com/documentation/
+
 ** Problem solving
  So what if you want to code motion without relying on the two-way or four-way components? For example, to make a box move when a key is pressed?
 
