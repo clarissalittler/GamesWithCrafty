@@ -34,7 +34,7 @@ HTML is made up of matching tags like
 #+END_SRC
 
 which, in default Chromium, looks like
-
+[[HTMLTest.png]]
 ** CSS
 CSS /styles/ your HTML and makes it more interesting
 
@@ -93,6 +93,7 @@ and change our HTML to include the CSS like so:
 #+END_SRC
 
 and you'll get something that looks completely different
+[[CSSScreenshot.png]]
 ** The Console
    In Chrome it's =Shift+Ctrl+J=
     [[console.png]]
@@ -161,6 +162,8 @@ and you'll get something that looks completely different
 #+END_SRC
 
 Try typing this in yourself (or copy-pasting if you're feeling bored!)
+
++ 
 
 You can load this by going into your browser and typing =file:///= and then you should be able to navigate to the file you typed up. Once you've done that, try to navigating to the file and checking to make sure it worked.
 ** Crafty
